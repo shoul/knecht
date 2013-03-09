@@ -33,6 +33,14 @@ Blog-Beiträgen durch ein einfache Web-Oberfläche ermöglichen.
 
 BSD 2 clauses
 
+## INSTALL ###
+
+* Eine virtuelle Umgebung anlegen [virutalenv](http://www.virtualenv.org/)
+* pip installieren
+* `pip install -r requirements.txt`
+* `acrylamid init test_blog`
+* python runserver.py
+
 
 [Acrylamid]:        https://github.com/posativ/acrylamid/
 
