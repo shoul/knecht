@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Knecht micro cms</h1>
+
+    {% if user_drafts %}
+    <h2>{{ user }}'s unfinished articles</h2>
+
+    <ul> 
+    {% for entry in user_drafts %}    	
+    <li><time datetime="{{ entry.date }}">{{ entry.date }}</time>
+    <a href="{{ conf.pref }}edit/{{ user }}/{{ entry.filename }}">{{ entry.props.title }}</a>
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if drafts %}
+    <h2>Global unfinished articles</h2>
+
+    <ul> 
+    {% for draft in drafts %}    	
+    <li><time datetime="{{ draft.date }}">{{ draft.date }}</time>
+      <a href="{{ draft.filename }}">{{ draft.props.title }}</a>
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if pages %}
+    <h2>Pages</h2>
+
+    <ul> 
+    {% for page in pages %}    	
+    <li><time datetime="{{ page.date }}">{{ page.date }}</time>
+      <a href="{{ page.filename }}">{{ page.props.title }}</a>
+    </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if blog_list %}
+    <h2>Finished articles</h2>
+
+    <ul> 
+    {% for article in blog_list %}    	
+    <li><time datetime="{{ article.date }}">{{ article.date }}</time>
+      <a href="{{ article.filename }}">{{ article.props.title }}</a>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+{% endblock content %}
+
