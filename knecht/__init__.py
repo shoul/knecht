@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import os
+import subprocess
 from flask import Flask, request, session, g, redirect, abort, render_template, flash
 from .utils import Obj
 from .engine.acrylamid import AcrylamidEngine
@@ -50,6 +51,7 @@ def edit(user, file_path):
 
     session = _get_session()
     conf = session['engine']
+    form = request.form
     try:
         # get_branch(user, filename)
         pass
@@ -64,19 +66,24 @@ def edit(user, file_path):
 
     # get_branch(user, file)
     if request.method == 'POST':
-        #if request.form.button == 'preview':
+        # TODO: Make new branch to edit this file
+        content = request.form.get('content')
+
+        if request.form.get('preview'):
             # commit()
             # acrylamid_compile(preview)
             # preview(file_path)
-        # if request.form.button == 'save':
+            return render_template('form.html', content=content)
+
+        if request.form.get('save'):
             # commti()
             # arcylamid_compile(deploy)
             # merge branche
             # delete preview
-        return render_template('form.html')
+            return redirect('/')
     else:
         for _file in files:
             if (file_path == _file.filename):
-                return render_template('form.html', user=user, path=file_path, content=conf.rawsource(_file))
+                return render_template('form.html', content=conf.rawsource(_file))
         # Give epty template
 
