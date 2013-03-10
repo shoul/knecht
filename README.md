@@ -4,8 +4,8 @@ Möglicher Programmname, Vorschläge willkommen.
 
 ## KURZFASSUNG ##
 
-Knecht ist ein einfaches Content Management System (CMS) für
-statische Blog Generatoren (SBG) wie [Acrylamid].
+Knecht ist ein micro Content Management System (CMS) für
+statische Blog Generatoren (SBG) wie zum Beispiel [Acrylamid].
 Er soll begrenzt das Bearbeiten und Verwalten von
 Blog-Beiträgen durch ein einfache Web-Oberfläche ermöglichen.
 
@@ -13,7 +13,7 @@ Blog-Beiträgen durch ein einfache Web-Oberfläche ermöglichen.
 
 * ein Knecht verwaltet eine Blog-Instanz
 * Liste aller Beiträge anzeigen (drafts oben, order by date ASC)
-* einen neuen Beitrag anlegen (MD, RST) (+Metadaten als Vorlage)
+* einen neuen Beitrag anlegen (MD, RST) (mit Metadaten als Vorlage)
 * einen bestehenden Beitrag bearbeiten
 * Assets hochladen
 * render des Generators triggern (preview, cleancache)
@@ -21,9 +21,12 @@ Blog-Beiträgen durch ein einfache Web-Oberfläche ermöglichen.
 
 ## BESONDERHEITEN / PROBLEME ##
 
-* Blog Sourcen werden im Repo gehalten (git, hg, ...) (auf gleichem Server)
+* Blog Sourcen werden im Repo gehalten (git, hg, ...)
 ** initiales auschecken beim eröffnen einer Session
-** ggf. wiederaufnehmen einer Session (pull, merge ...) ?
+** ggf. wiederaufnehmen einer Session (pull, merge ...)
+** jede zu bearbeitende Datei wir in einem user branch gehalten
+** jede Änderung lößt einen commit aus
+** finales Abspeichen squashed änderungen
 ** Änderungen commiten && pushen, ggf bei problemen patches per email verschicken ?
 * Pfade (content, static, output) auslesbar (config.py)
 * Feedback vom Generator
@@ -38,7 +41,7 @@ BSD 2 clauses
 * Eine virtuelle Umgebung anlegen [virutalenv](http://www.virtualenv.org/)
 * pip installieren
 * `pip install -r requirements.txt`
-* `acrylamid init test_blog`
+* `mkdir repos && acrylamid init repos/foo`
 * python runserver.py
 
 
