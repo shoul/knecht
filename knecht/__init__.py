@@ -11,7 +11,8 @@ from .acrblog import Engine
 conf = Obj()
 app = Flask('knecht')
 
-conf.blogbase = os.getcwd() + "/knecht_repos/"
+# TODO get settings from knecht conf.py
+conf.blogbase = os.getcwd() + "/repos/"
 conf.blogconf = 'conf.py'
 
 
