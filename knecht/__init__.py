@@ -73,11 +73,3 @@ def edit(user, file_path):
         # make_branch(user, filename)
     # change_brance(file_branche)
 
-
-def genList(path, entries):
-    for e in entries:
-        try:
-            tags = " [%s]" % ", ".join(e.tags)
-        except Exception:
-            tags = ''
-        yield '<li><time datetime="%s">%s</time> <a href="%s%s">%s</a>%s</li>' % (e.date, e.date, path, e.filename, e.props.title, tags)
