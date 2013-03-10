@@ -22,7 +22,7 @@
     <ul>
     {% for draft in drafts %}
     <li><time datetime="{{ draft.date }}">{{ draft.date }}</time>
-      <a href="{{ draft.filename }}">{{ draft.props.title }}</a>
+      <a href="{{ session.pref }}edit/{{ session.user }}/{{ draft.filename }}">{{ draft.props.title }}</a>
     </li>
     {% endfor %}
     </ul>
@@ -34,7 +34,7 @@
     <ul>
     {% for page in pages %}
     <li><time datetime="{{ page.date }}">{{ page.date }}</time>
-      <a href="{{ page.filename }}">{{ page.props.title }}</a>
+      <a href="{{ session.pref }}edit/{{ session.user }}/{{ page.filename }}">{{ page.props.title }}</a>
     </li>
     {% endfor %}
     </ul>
@@ -46,7 +46,7 @@
     <ul>
     {% for article in entries %}
     <li><time datetime="{{ article.date }}">{{ article.date }}</time>
-      <a href="{{ article.filename }}">{{ article.props.title }}</a>
+      <a href="{{ session.pref }}edit/{{ session.user }}/{{ article.filename }}">{{ article.props.title }}</a>
     {% endfor %}
     </ul>
     {% endif %}
