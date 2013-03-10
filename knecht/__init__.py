@@ -36,7 +36,7 @@ def index():
     pages = blog.get_pages()
     entries = blog.get_entries()
     return render_template('entry_list.html', user_drafts=user_drafts, drafts=drafts, pages=pages, entries=entries)
-    
+
 
 #def edit(file_path):
 #    for e in conf.blog.getEntries():
@@ -47,7 +47,7 @@ def index():
 @app.route('/edit/<user>/<path:file_path>', methods=['GET', 'POST'])
 def edit(user, file_path):
     '''Edit or create file'''
-    
+
     # get_branch(user, file)
     if request.method == 'POST':
         #if request.form.button == 'preview':
@@ -58,7 +58,7 @@ def edit(user, file_path):
             # commti()
             # arcylamid_compile(deploy)
             # merge branche
-            # delete preview            
+            # delete preview
         pass
     else:
         # Give epty template

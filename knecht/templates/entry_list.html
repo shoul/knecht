@@ -7,8 +7,8 @@
     {% if user_drafts %}
     <h2>{{ user }}'s unfinished articles</h2>
 
-    <ul> 
-    {% for entry in user_drafts %}    	
+    <ul>
+    {% for entry in user_drafts %}
     <li><time datetime="{{ entry.date }}">{{ entry.date }}</time>
     <a href="{{ conf.pref }}edit/{{ user }}/{{ entry.filename }}">{{ entry.props.title }}</a>
     </li>
@@ -19,8 +19,8 @@
     {% if drafts %}
     <h2>Global unfinished articles</h2>
 
-    <ul> 
-    {% for draft in drafts %}    	
+    <ul>
+    {% for draft in drafts %}
     <li><time datetime="{{ draft.date }}">{{ draft.date }}</time>
       <a href="{{ draft.filename }}">{{ draft.props.title }}</a>
     </li>
@@ -31,8 +31,8 @@
     {% if pages %}
     <h2>Pages</h2>
 
-    <ul> 
-    {% for page in pages %}    	
+    <ul>
+    {% for page in pages %}
     <li><time datetime="{{ page.date }}">{{ page.date }}</time>
       <a href="{{ page.filename }}">{{ page.props.title }}</a>
     </li>
@@ -40,11 +40,11 @@
     </ul>
     {% endif %}
 
-    {% if blog_list %}
+    {% if entries %}
     <h2>Finished articles</h2>
 
-    <ul> 
-    {% for article in blog_list %}    	
+    <ul>
+    {% for article in entries %}
     <li><time datetime="{{ article.date }}">{{ article.date }}</time>
       <a href="{{ article.filename }}">{{ article.props.title }}</a>
     {% endfor %}
