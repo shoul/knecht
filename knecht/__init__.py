@@ -4,7 +4,7 @@ from __future__ import absolute_import
 import os
 from flask import Flask, request, session, g, redirect, abort, render_template, flash
 from .utils import Obj
-from .engine import AcrylamidEngine
+from .engine.acrylamid import AcrylamidEngine
 
 # TODO add logging features http://flask.pocoo.org/docs/errorhandling/#application-errors
 
@@ -34,7 +34,9 @@ def _get_session():
     s.conf = conf
     try:
         s.engine = conf.engine(s)
-    except Exception:
+    except Exception as e:
+        # TODO add logging
+        print e
         abort(500)
     return s
 
