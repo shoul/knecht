@@ -8,8 +8,14 @@ import os
 from acrylamid.core import load as loadconf
 from acrylamid.readers import load as loadentries
 
-class Engine():
+class Engine(object):
     def __init__(self, session):
+        pass
+
+class AcrylamidEngine():
+    def __init__(self, session):
+        # TODO retrieve user drafts from SCM
+        self.__user_drafts = []
         try:
             path = os.path.join(session.conf.blogbase, session.user, session.conf.blogconf)
             self.conf = loadconf(path)
@@ -17,20 +23,21 @@ class Engine():
         except Exception as e:
             log.critical("fail to initialize Acrylamid: %s" % str(e))
             raise e
-        self.__user_drafts = [] # Draft in current user branche
 
     def get_user_drafts(self):
-        '''Get draft from unclosed user branche'''
-        pass
+        '''Get unfinished user entries'''
+        return self.__user_drafts
 
     def get_entries(self):
+        '''Get all the rest entries'''
         return self.__entries
 
     def get_pages(self):
+        '''Get static pages'''
         return self.__pages
 
     def get_drafts(self):
-        '''Get entrys with draft true'''
+        '''Get all entries that marked as draft'''
         return self.__drafts
 
     def rawsource(self, entry):

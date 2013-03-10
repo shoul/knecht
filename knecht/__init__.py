@@ -2,22 +2,19 @@
 from __future__ import absolute_import
 
 import os
-
+from flask import Flask, request, session, g, redirect, abort, render_template, flash
 from .utils import Obj
+from .engine import AcrylamidEngine
 
-from flask import Flask, request, session, g, redirect, abort, render_template, flash, abort
+# TODO add logging features http://flask.pocoo.org/docs/errorhandling/#application-errors
 
-from .acrblog import Engine
-
-# TODO add  logging features http://flask.pocoo.org/docs/errorhandling/#application-errors
-
-conf = Obj()
 app = Flask('knecht')
 
 # TODO get settings from knecht conf.py
+conf = Obj()
 conf.blogbase = os.getcwd() + "/repos/"
 conf.blogconf = 'conf.py'
-conf.engine = Engine
+conf.engine = AcrylamidEngine
 
 @app.route('/')
 def index():
