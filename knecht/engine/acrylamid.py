@@ -6,7 +6,7 @@ import logging as log
 import io
 import os
 
-from . import Engine
+from . import Engine, Entry
 
 from acrylamid.core import load as loadconf
 from acrylamid.readers import load as loadentries
@@ -27,13 +27,18 @@ class AcrylamidEngine(Engine):
         return self.__user_drafts
 
     def get_entries(self):
-        return self.__entries
+        return self._wrap_entries(self.__entries)
 
     def get_pages(self):
-        return self.__pages
+        return self._wrap_entries(self.__pages)
 
     def get_drafts(self):
-        return self.__drafts
+        return self._wrap_entries(self.__drafts)
+
+    def _wrap_entries(self, entries):
+        for e in entries:
+            yield Entry(e.props.title, e.date, e.filename)
+        raise StopIteration()
 
     def store_entry(self, entry):
         pass
@@ -44,8 +49,7 @@ class AcrylamidEngine(Engine):
     def deploy(self):
         pass
 
-    # TODO move into entry
-    def rawsource(self, entry):
-        with io.open(entry.filename, 'r', encoding=entry.props['encoding'],
-                errors='replace') as f:
+    def get_entry_content(self, entry):
+        # TODO get entry encoding
+        with io.open(entry.path, 'r', encoding='utf-8', errors='replace') as f:
             return ''.join(f.readlines())

@@ -3,6 +3,8 @@
 
 import abc
 
+# TODO add a global entry cache?
+
 class Engine(object):
     __metaclass__ = abc.ABCMeta
 
@@ -27,6 +29,10 @@ class Engine(object):
         '''stores the content'''
 
     @abc.abstractmethod
+    def get_entry_content(self, entry):
+        '''retrieves the entry content'''
+
+    @abc.abstractmethod
     def preview(self, entry=None):
         '''renders a preview'''
 
@@ -34,10 +40,21 @@ class Engine(object):
     def deploy(self):
         '''deploys rendered content'''
 
+class Entry(object):
+    def __init__(self, title=None, date=None, path=None):
+        self._title = title
+        self._date = date
+        self._path = path
 
-# TODO create own Entry class to abstract from Acrylamid
-# properties: title, date, filepath
-# methods: content(raw)
+    @property
+    def title(self):
+        return self._title
 
-# TODO add a global entry cache?
+    @property
+    def date(self):
+        return self._date
+
+    @property
+    def path(self):
+        return self._path
 
