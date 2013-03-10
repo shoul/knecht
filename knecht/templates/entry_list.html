@@ -1,55 +1,31 @@
 {% extends "base.html" %}
 
+{% macro list(headline, entries) %}
+{% if entries %}
+<h2>{{ headline }}</h2>
+<ul>
+    {% for entry in entries %}
+    <li>
+        <time datetime="{{ entry.date.strftime("%Y-%m-%d") }}">{{ entry.date.strftime("%Y-%m-%d") }}</time>
+        <a href="{{ basepath + '/' + entry.path }}">{{ entry.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+
+
 {% block content %}
 
-    <h1>Knecht micro cms</h1>
+    <h1>Knecht Micro CMS</h1>
 
-    {% if user_drafts %}
-    <h2>{{ user }}'s unfinished articles</h2>
+    {{ list("Your unfinished articles", user_drafts) }}
 
-    <ul>
-    {% for entry in user_drafts %}
-    <li><time datetime="{{ entry.date }}">{{ entry.date }}</time>
-    <a href="{{ conf.pref }}edit/{{ user }}/{{ entry.filename }}">{{ entry.props.title }}</a>
-    </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+    {{ list("Global unfinished articles", drafts) }}
 
-    {% if drafts %}
-    <h2>Global unfinished articles</h2>
+    {{ list("Static pages", pages) }}
 
-    <ul>
-    {% for draft in drafts %}
-    <li><time datetime="{{ draft.date }}">{{ draft.date }}</time>
-      <a href="{{ session.pref }}edit/{{ session.user }}/{{ draft.filename }}">{{ draft.props.title }}</a>
-    </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if pages %}
-    <h2>Pages</h2>
-
-    <ul>
-    {% for page in pages %}
-    <li><time datetime="{{ page.date }}">{{ page.date }}</time>
-      <a href="{{ session.pref }}edit/{{ session.user }}/{{ page.filename }}">{{ page.props.title }}</a>
-    </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-
-    {% if entries %}
-    <h2>Finished articles</h2>
-
-    <ul>
-    {% for article in entries %}
-    <li><time datetime="{{ article.date }}">{{ article.date }}</time>
-      <a href="{{ session.pref }}edit/{{ session.user }}/{{ article.filename }}">{{ article.props.title }}</a>
-    {% endfor %}
-    </ul>
-    {% endif %}
+    {{ list("Finished articles", entries) }}
 
 {% endblock content %}
 
