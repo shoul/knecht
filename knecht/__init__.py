@@ -16,14 +16,17 @@ conf.blogbase = os.getcwd() + "/repos/"
 conf.blogconf = 'conf.py'
 conf.engine = AcrylamidEngine
 
+
 @app.route('/')
 def index():
     s = _get_session()
     return render_template('entry_list.html',
+                session=s,
                 user_drafts=s.engine.get_user_drafts(),
                 drafts=s.engine.get_drafts(),
                 pages=s.engine.get_pages(),
                 entries=s.engine.get_entries())
+
 
 def _get_session():
     # TODO: Get user from auth
@@ -41,15 +44,23 @@ def _get_session():
     return s
 
 
-#def edit(file_path):
-#    for e in conf.blog.getEntries():
-#        if (file_path == e.filename):
-#            return '<textarea rows="50" cols="100">%s</textarea>' % conf.blog.rawsource(e)
-
-
 @app.route('/edit/<user>/<path:file_path>', methods=['GET', 'POST'])
 def edit(user, file_path):
     '''Edit or create file'''
+
+    session = _get_session()
+    conf = session['engine']
+    try:
+        # get_branch(user, filename)
+        pass
+    except:
+        pass
+        # make_branch(user, filename)
+    # change_brance(file_branche)
+
+    files = conf.get_drafts() + conf.get_entries() + conf.get_pages()
+    # TODO: Add list of user_drafts like below
+    #+ conf.get_user_drafts
 
     # get_branch(user, file)
     if request.method == 'POST':
@@ -62,16 +73,10 @@ def edit(user, file_path):
             # arcylamid_compile(deploy)
             # merge branche
             # delete preview
-        pass
+        return render_template('form.html')
     else:
+        for _file in files:
+            if (file_path == _file.filename):
+                return render_template('form.html', user=user, path=file_path, content=conf.rawsource(_file))
         # Give epty template
-        pass
-
-    try:
-        # get_branch(user, filename)
-        pass
-    except:
-        pass
-        # make_branch(user, filename)
-    # change_brance(file_branche)
 
