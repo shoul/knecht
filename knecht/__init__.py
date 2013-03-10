@@ -20,6 +20,7 @@ conf.engine = AcrylamidEngine
 def index():
     s = _get_session()
     return render_template('entry_list.html',
+                basepath='/edit/' + s.user,
                 user_drafts=s.engine.get_user_drafts(),
                 drafts=s.engine.get_drafts(),
                 pages=s.engine.get_pages(),
@@ -44,7 +45,7 @@ def _get_session():
 #def edit(file_path):
 #    for e in conf.blog.getEntries():
 #        if (file_path == e.filename):
-#            return '<textarea rows="50" cols="100">%s</textarea>' % conf.blog.rawsource(e)
+#            return '<textarea rows="50" cols="100">%s</textarea>' % conf.engine.get_entry_content(e)
 
 
 @app.route('/edit/<user>/<path:file_path>', methods=['GET', 'POST'])
