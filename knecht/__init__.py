@@ -1,42 +1,44 @@
 # -*- encoding: utf-8 -*-
 from __future__ import absolute_import
+
 import os
-
-from .utils import Obj
-
 from flask import Flask, request, session, g, redirect, abort, render_template, flash
+from .utils import Obj
+from .engine.acrylamid import AcrylamidEngine
 
-from .acrblog import Engine
+# TODO add logging features http://flask.pocoo.org/docs/errorhandling/#application-errors
 
-conf = Obj()
 app = Flask('knecht')
 
 # TODO get settings from knecht conf.py
+conf = Obj()
 conf.blogbase = os.getcwd() + "/repos/"
 conf.blogconf = 'conf.py'
-
-
-def get_bolg(session):
-    try:
-        blog = Engine(session)
-    except Exception as e:
-        print (e)
-        blog = None
-    return blog
-
+conf.engine = AcrylamidEngine
 
 @app.route('/')
 def index():
-    session = Obj()
-    session.user = 'foo'
-    session.conf = conf
+    s = _get_session()
+    return render_template('entry_list.html',
+                user_drafts=s.engine.get_user_drafts(),
+                drafts=s.engine.get_drafts(),
+                pages=s.engine.get_pages(),
+                entries=s.engine.get_entries())
+
+def _get_session():
     # TODO: Get user from auth
-    user_drafts = '' # TODO: Get user drafts from user repo
-    blog = get_bolg(session)
-    drafts = blog.get_drafts()
-    pages = blog.get_pages()
-    entries = blog.get_entries()
-    return render_template('entry_list.html', user_drafts=user_drafts, drafts=drafts, pages=pages, entries=entries)
+    user = 'foo'
+    # TODO: cache sessions
+    s = Obj()
+    s.user = user
+    s.conf = conf
+    try:
+        s.engine = conf.engine(s)
+    except Exception as e:
+        # TODO add logging
+        print e
+        abort(500)
+    return s
 
 
 #def edit(file_path):
@@ -73,11 +75,3 @@ def edit(user, file_path):
         # make_branch(user, filename)
     # change_brance(file_branche)
 
-
-def genList(path, entries):
-    for e in entries:
-        try:
-            tags = " [%s]" % ", ".join(e.tags)
-        except Exception:
-            tags = ''
-        yield '<li><time datetime="%s">%s</time> <a href="%s%s">%s</a>%s</li>' % (e.date, e.date, path, e.filename, e.props.title, tags)
