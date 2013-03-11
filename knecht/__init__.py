@@ -2,8 +2,9 @@
 from __future__ import absolute_import
 
 import os
+from .engine import Engine
 from flask import Flask, request, session, g, redirect, abort, render_template, flash
-from .utils import Obj
+from .utils import Metadata
 from .engine.acrylamid import AcrylamidEngine
 
 # TODO add logging features http://flask.pocoo.org/docs/errorhandling/#application-errors
@@ -11,11 +12,14 @@ from .engine.acrylamid import AcrylamidEngine
 app = Flask('knecht')
 
 # TODO get settings from knecht conf.py
-conf = Obj()
+conf = Metadata({
+    'blogbase' : str,
+    'blogconf' : str,
+    'engine' : Engine,
+})
 conf.blogbase = os.getcwd() + "/repos/"
 conf.blogconf = 'conf.py'
 conf.engine = AcrylamidEngine
-
 
 @app.route('/')
 def index():
@@ -86,7 +90,7 @@ def _get_session():
     # TODO Get user from auth
     user = 'foo'
     # TODO cache sessions
-    s = Obj()
+    s = Metadata( { 'user' : str, 'conf' : Metadata, 'engine' : Engine } )
     s.user = user
     s.conf = conf
     try:
