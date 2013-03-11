@@ -1,4 +1,3 @@
-#!/bin/env python2.7
 # -*- encoding: utf-8 -*-
 from __future__ import absolute_import
 
@@ -8,8 +7,8 @@ import os
 
 from . import Engine, Entry
 
-from acrylamid.core import load as loadconf
-from acrylamid.readers import load as loadentries
+from acrylamid.core import load as load_conf
+from acrylamid.readers import load as load_entries
 
 class AcrylamidEngine(Engine):
     def __init__(self, session):
@@ -19,8 +18,8 @@ class AcrylamidEngine(Engine):
         try:
             self._root = os.path.join(session.conf.blogbase, session.user)
             confile = os.path.join(self._root, session.conf.blogconf)
-            self.conf = loadconf(confile)
-            (self.__entries, self.__pages, _, self.__drafts) = loadentries(self.conf)
+            self.conf = load_conf(confile)
+            (self.__entries, self.__pages, _, self.__drafts) = load_entries(self.conf)
         except Exception as e:
             log.critical("fail to initialize Acrylamid: %s" % str(e))
             raise e
