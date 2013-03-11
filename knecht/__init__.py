@@ -32,11 +32,22 @@ def index():
                 entries=s.engine.get_entries())
 
 
-
 @app.route('/edit/<user>/<path:file_path>', methods=['GET', 'POST'])
 def edit(user, file_path):
-    '''Setup Edit form and fill it with file content'''
+    '''Setup Edit form and fill it with file content.
+
+    Do theese stepss while editing:
+    * look for an existing user repo and create if not exist.
+    * go in that repo and wor in it for this session
+    * look for an existing file-edit-branche in the user repo
+    *       create branche if not exist.
+    * work on theese branche
+    * save changes in a new commit
+    * make a new preview for each changed version
+    * finish editing mean: new commit, merge to user-branche,
+            delete file-edit-branche, kill session.'''
     s = _get_session()
+
     try:
         # TODO adjust preview and finish URIs in form.html
         return render_template('form.html', content=s.engine.get_file_content(file_path))
@@ -45,15 +56,13 @@ def edit(user, file_path):
         redirect('/')
 
 
-
-
     # TODO move preview code into own method (save_and_preview)
     #      and call it asynchronously? Use fancy user feedback.
 
     if request.method == 'POST':
-        content = request.form.get('content')
+        new_content = request.form.get('content')
         try:
-            s.engine.store_file(file_path, content)
+            s.engine.store_file(file_path, new_content)
         except Exception as e:
             print e
             # TODO something messed the commit up
@@ -72,18 +81,32 @@ def edit(user, file_path):
         # TODO move edit_finish code into own method
 
         if request.form.get('save'):
-            try:
-                s.engine.finish_file(file_path)
-            except Exception as e:
-                print e
-                # TODO something messed the final merge completely up
-                #      there is no way to solve this exception
-                # return user feedback and send stacktrace to admin
-
-            # TODO provide user feedback that everything went well
-            return redirect('/')
+            save(file_path)
         # faulty request
         abort(500)
+
+
+def save():
+    '''Save blog and redirect to edit uri'''
+
+        try:
+            s.engine.finish_file(file_path)
+        except Exception as e:
+            print e
+            # TODO something messed the final merge completely up
+            #      there is no way to solve this exception
+            # return user feedback and send stacktrace to admin
+
+        # TODO provide user feedback that everything went well
+        return redirect('/')
+
+
+def finish():
+    '''Finishing edit
+
+    * save
+    * merge with the main user branche
+    * deleting existing workbranch for file'''
 
 
 def _get_session():
