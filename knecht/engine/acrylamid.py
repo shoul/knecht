@@ -26,16 +26,16 @@ class AcrylamidEngine(Engine):
             raise e
 
     def get_user_drafts(self):
-        return self.__user_drafts
+        return self.__user_drafts if len(self.__user_drafts) else None
 
     def get_entries(self):
-        return self._wrap_entries(self.__entries)
+        return self._wrap_entries(self.__entries) if len(self.__entries) else None
 
     def get_pages(self):
-        return self._wrap_entries(self.__pages)
+        return self._wrap_entries(self.__pages) if len(self.__pages) else None
 
     def get_drafts(self):
-        return self._wrap_entries(self.__drafts)
+        return self._wrap_entries(self.__drafts) if len(self.__drafts) else None
 
     def _wrap_entries(self, entries):
         for e in entries:
