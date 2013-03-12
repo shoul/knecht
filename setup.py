@@ -27,8 +27,8 @@ setup(
         "Programming Language :: Python :: 2.7",
     ], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     keywords='',
-    author='Christoph Polcin, Frank Schneider',
-    author_email='labs@polcin.de, shoul@gmx.de',
+    author='Christoph Polcin <labs@polcin.de>, Frank Schneider <shoul@gmx.de>',
+    author_email='dev@polcin.de',
     license='BSD',
     py_modules=['knecht.__init__'],
 )
