@@ -21,6 +21,7 @@ conf.blogbase = os.getcwd() + "/repos/"
 conf.blogconf = 'conf.py'
 conf.engine = AcrylamidEngine
 
+
 @app.route('/')
 def index():
     s = _get_session()
@@ -32,20 +33,20 @@ def index():
                 entries=s.engine.get_entries())
 
 
-
 @app.route('/edit/<user>/<path:file_path>', methods=['GET', 'POST'])
 def edit(user, file_path):
     '''Setup Edit form and fill it with file content'''
     s = _get_session()
+
+    if file_path.strip('/').split('/')[-1] == 'new':
+        return render_template('form.html', content=new_entry(s))
+
     try:
         # TODO adjust preview and finish URIs in form.html
         return render_template('form.html', content=s.engine.get_file_content(file_path))
     except Exception as e:
         print e
         redirect('/')
-
-
-
 
     # TODO move preview code into own method (save_and_preview)
     #      and call it asynchronously? Use fancy user feedback.
@@ -68,7 +69,6 @@ def edit(user, file_path):
             #      render error
             # return user feedback
 
-
         # TODO move edit_finish code into own method
 
         if request.form.get('save'):
@@ -86,6 +86,35 @@ def edit(user, file_path):
         abort(500)
 
 
+def new_entry(s):
+    '''Make a new enty in blog engine'''
+
+    import datetime
+    import hashlib
+    h = hashlib.new('ripemd160')
+    now = datetime.datetime.now().strftime('%d.%m.%Y, %H:%M')
+    h.update(now)
+    base_headers = [
+    '-' * 3,
+    'title: %s' % 'NEW ENTRY',
+    'date: %s' % now,
+    'author: %s' % s.user,
+    'tags: []',
+    'filters: ',
+    'permalink: ',
+    'type: ',
+    'encoding:',
+    'lang:',
+    'draft: False',
+    'layout:',
+    '-' * 3, ]
+
+    # TODO: save file with base content in new branch
+    tmp_name = h.hexdigest()
+
+    return '\n'.join(base_headers)
+
+
 def _get_session():
     # TODO Get user from auth
     user = 'foo'
@@ -100,4 +129,3 @@ def _get_session():
         print e
         abort(500)
     return s
-
