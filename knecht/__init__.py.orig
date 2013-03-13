@@ -35,12 +35,26 @@ def index():
 
 @app.route('/edit/<user>/<path:file_path>', methods=['GET', 'POST'])
 def edit(user, file_path):
-    '''Setup Edit form and fill it with file content'''
+    '''Setup Edit form and fill it with file content.
+
+    Do theese stepss while editing:
+    * look for an existing user repo and create if not exist.
+    * go in that repo and wor in it for this session
+    * look for an existing file-edit-branche in the user repo
+    *       create branche if not exist.
+    * work on theese branche
+    * save changes in a new commit
+    * make a new preview for each changed version
+    * finish editing mean: new commit, merge to user-branche,
+            delete file-edit-branche, kill session.'''
     s = _get_session()
 
+<<<<<<< HEAD
     if file_path.strip('/').split('/')[-1] == 'new':
         return render_template('form.html', content=new_entry(s))
 
+=======
+>>>>>>> split_edit_view
     try:
         # TODO adjust preview and finish URIs in form.html
         return render_template('form.html', content=s.engine.get_file_content(file_path))
@@ -48,6 +62,10 @@ def edit(user, file_path):
         print e
         redirect('/')
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> split_edit_view
     # TODO move preview code into own method (save_and_preview)
     #      and call it asynchronously? Use fancy user feedback.
 
@@ -77,6 +95,7 @@ def edit(user, file_path):
         abort(500)
 
 
+<<<<<<< HEAD
 def new_entry(s):
     '''Make a new enty in blog engine'''
 
@@ -104,8 +123,7 @@ def new_entry(s):
     tmp_name = h.hexdigest()
 
     return '\n'.join(base_headers)
-
-
+=======
 def save():
     '''Save blog and redirect to edit uri'''
 
@@ -127,6 +145,7 @@ def finish():
     * save
     * merge with the main user branche
     * deleting existing workbranch for file'''
+>>>>>>> split_edit_view
 
 
 def _get_session():
