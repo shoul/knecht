@@ -22,12 +22,12 @@ Blog-Beiträgen durch ein einfache Web-Oberfläche ermöglichen.
 ## BESONDERHEITEN / PROBLEME ##
 
 * Blog Sourcen werden im Repo gehalten (git, hg, ...)
-** initiales auschecken beim eröffnen einer Session
-** ggf. wiederaufnehmen einer Session (pull, merge ...)
-** jede zu bearbeitende Datei wir in einem user branch gehalten
-** jede Änderung lößt einen commit aus
-** finales Abspeichen squashed änderungen
-** Änderungen commiten && pushen, ggf bei problemen patches per email verschicken ?
+* initiales auschecken beim eröffnen einer Session
+* ggf. wiederaufnehmen einer Session (pull, merge ...)
+* jede zu bearbeitende Datei wir in einem user branch gehalten
+* jede Änderung lößt einen commit aus
+* finales Abspeichen squashed änderungen
+* Änderungen commiten && pushen, ggf bei problemen patches per email verschicken ?
 * Pfade (content, static, output) auslesbar (config.py)
 * Feedback vom Generator
 * Authentifizierung: HTTP Basic Auth?
@@ -42,6 +42,7 @@ BSD 2 clauses
 * pip installieren
 * `pip install -r requirements.txt`
 * `mkdir repos && acrylamid init repos/foo`
+* echo "REPOS = '$(pwd)/repos'" > conf.py
 * python runserver.py
 
 
