@@ -1,26 +1,16 @@
 # -*- encoding: utf-8 -*-
 from __future__ import absolute_import
 
-import os
-from .engine import Engine
 from flask import Flask, request, session, g, redirect, abort, render_template, flash
-from .utils import Metadata
-from .engine.acrylamid import AcrylamidEngine
+from .engine import Engine
+from .utils import load_config, Metadata
 
 # TODO add logging features http://flask.pocoo.org/docs/errorhandling/#application-errors
 
+conf = load_config('KNECHT_CONFIG')
+
 app = Flask('knecht')
-
-# TODO get settings from knecht conf.py
-conf = Metadata({
-    'blogbase' : str,
-    'blogconf' : str,
-    'engine' : Engine,
-})
-conf.blogbase = os.getcwd() + "/repos/"
-conf.blogconf = 'conf.py'
-conf.engine = AcrylamidEngine
-
+app.config.from_object(conf._raw)
 
 @app.route('/')
 def index():
