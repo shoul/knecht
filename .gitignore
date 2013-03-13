@@ -2,3 +2,4 @@
 *.swp
 repos
 build
+conf.py

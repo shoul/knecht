@@ -16,7 +16,7 @@ class AcrylamidEngine(Engine):
         self.__user_drafts = []
         self._session = session
         try:
-            self._root = os.path.join(session.conf.blogbase, session.user)
+            self._root = os.path.join(session.conf.repos, session.user)
             confile = os.path.join(self._root, session.conf.blogconf)
             self.conf = load_conf(confile)
             (self.__entries, self.__pages, _, self.__drafts) = load_entries(self.conf)

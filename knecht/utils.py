@@ -1,5 +1,48 @@
-#!/bin/env python2.7
 # -*- encoding: utf-8 -*-
+
+import imp
+import os
+from importlib import import_module
+from types import ModuleType
+from .engine import Engine
+
+def load_config(env_var):
+    c = Metadata({
+        '_raw' : ModuleType,
+        'repos' : str,
+        'blogconf' : str,
+        'engine' : Engine
+    })
+    c._raw = imp.new_module('config')
+
+    # defaults
+    c._raw.__dict__['ENGINE'] = 'knecht.engine.acrylamid.AcrylamidEngine'
+    c._raw.__dict__['BLOGCONF'] = 'conf.py'
+
+    try:
+        filepath = os.getenv(env_var, os.path.join(os.getcwd(), 'conf.py'))
+        c._raw.__file__ = filepath
+        execfile(filepath, c._raw.__dict__)
+    except Exception, e:
+        e.strerror = 'fail to load config file: (%s) ' % e.strerror
+        raise
+
+    for key in dir(c._raw):
+        if key.isupper() and key.lower() in c._allowed_keys:
+            k = key.lower()
+            v = getattr(c._raw, key)
+            if k == 'engine':
+                v = v.split('.')
+                c.engine = getattr(import_module('.'.join(v[:-1]), v[-1]), v[-1] )
+            else:
+                c[k] = v
+    #validate
+    for k in ('repos', 'engine'):
+        if not c[k]:
+            raise AttributeError('faulty %, missing key: %s' % (filepath, k.upper()))
+
+    return c
+
 
 """Configurable metadata container
 borrowed from https://bitbucket.org/keimlink/metadata
