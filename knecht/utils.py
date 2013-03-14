@@ -38,10 +38,13 @@ def load_config(env_var):
             else:
                 c[k] = v
     #validate
-    for k in ('repos', 'engine'):
-        if not c[k]:
-            raise AttributeError('incomplete configuration file: %, \
-                    missing settings for : %s' % (filepath, k.upper()))
+    for k in ('repo_src', 'repos', 'engine', 'scm'):
+        try:
+            if not c[k]:
+                raise KeyError()
+        except KeyError:
+            raise AttributeError('incomplete configuration file: %s, missing settings for : %s'
+                    % (filepath, k.upper()))
 
     return c
 
