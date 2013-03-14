@@ -42,7 +42,7 @@ BSD 2 clauses
 * pip installieren
 * `pip install -r requirements.txt`
 * `mkdir repos && acrylamid init repos/foo`
-* echo "REPOS = '$(pwd)/repos'" > conf.py
+* `echo "REPOS = '$(pwd)/repos'" > conf.py`
 * python runserver.py
 
 
