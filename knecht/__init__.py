@@ -4,8 +4,9 @@ from __future__ import absolute_import
 from flask import Flask, request, session, g, redirect, abort, render_template, flash
 from .engine import Engine
 from .utils import load_config, Metadata
+from . import log
 
-# TODO add logging features http://flask.pocoo.org/docs/errorhandling/#application-errors
+log.init(__name__)
 
 conf = load_config('KNECHT_CONFIG')
 
