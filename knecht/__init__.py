@@ -82,8 +82,8 @@ def edit(user, file_path):
         # TODO adjust preview and finish URIs in form.html
         return render_template('form.html', content=s.engine.get_file_content(file_path))
     except Exception as e:
-        print e
-        redirect('/')
+        log.x('fail to retrieve content from: %s' % file_path)
+        return redirect('/')
 
     # TODO move preview code into own method (save_and_preview)
     #      and call it asynchronously? Use fancy user feedback.
@@ -137,8 +137,7 @@ def _get_session():
     s.conf = conf
     try:
         s.engine = conf.engine(s)
-    except Exception as e:
-        # TODO add logging
-        print e
+    except Exception:
+        log.x('fail to initialize session: User = %s' % s.user)
         abort(500)
     return s
