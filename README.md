@@ -24,7 +24,7 @@ Blog-Beiträgen durch ein einfache Web-Oberfläche ermöglichen.
 * Blog Sourcen werden im Repo gehalten (git, hg, ...)
 * initiales auschecken beim eröffnen einer Session
 * ggf. wiederaufnehmen einer Session (pull, merge ...)
-* jede zu bearbeitende Datei wir in einem user branch gehalten
+* jede zu bearbeitende Datei wird in einem user branch gehalten
 * jede Änderung lößt einen commit aus
 * finales Abspeichen squashed änderungen
 * Änderungen commiten && pushen, ggf bei problemen patches per email verschicken ?

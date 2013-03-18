@@ -1,10 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+    {% if edit_new_file %}
+        <h1>New entry</h1>
+    {% else %}
+        <h1>Edit etntry</h1>
+    {% endif %}
+
+        {% if message %}
+            <p style="color:sienna;margin-left:20px">{{ message }}</p>
+        {% endif %}
+
     <form method="post">
+        {% if edit_new_file %}
+        <p>
+        <span> Please enter a filename: </span>
+            <input type="text" name=file_name placeholder="new_entry.txt" pattern="[\w]+{3,250}\.[\w]+{0,3}">
+        </p>
+        {% endif %}
+
+
        <textarea name=content rows="50" cols="100">{{ content }}</textarea> <br>
-        <input name=preview type=submit value=Preview> <br>
+
+        {% if edit_new_file %}
+        <a href="edit/edit_new_file">
+            <input name=save_new type=submit value='Save new'> <br>
+        </a>
+        {% else %}
+        <a href="{{ preview }}" target="_blank">
+            <input name=preview type=submit value=Preview> <br>
+        </a>
         <br>
         <input name=save type=submit value=Save> <br>
+        {% endif %}
     </form>
 {% endblock content %}
