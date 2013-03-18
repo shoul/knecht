@@ -2,9 +2,12 @@
 
 import imp
 import os
+
 from importlib import import_module
 from types import ModuleType
-from .engine import Engine
+
+from knecht.engine import Engine
+
 
 def load_config(env_var):
     c = Metadata({

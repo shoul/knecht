@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
-from __future__ import absolute_import
 
 from flask import Flask, request, session, g, redirect, abort, render_template, flash
-from .engine import Engine
-from .utils import load_config, Metadata
-from . import log
+
+from knecht.engine import Engine
+from knecht.utils import load_config, Metadata
+from knecht import log
 
 log.init(__name__)
 

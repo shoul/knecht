@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 from __future__ import absolute_import
 
-import logging as log
 import io
 import os
 
-from . import Engine, Entry
+from knecht import log
+from knecht.engine import Engine, Entry
 
 from acrylamid.core import load as load_conf
 from acrylamid.readers import load as load_entries
