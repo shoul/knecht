@@ -1,5 +1,11 @@
+*.orig
+*.rej
+*.bak
+*.patch
+__pycache__
 *.pyc
 *.swp
 repos
 build
 conf.py
+
