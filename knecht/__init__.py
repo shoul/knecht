@@ -47,8 +47,6 @@ def new():
     '''Make a new enty in blog engine'''
     s = _get_session()
 
-    import ipdb; ipdb.set_trace()
-
     if request.method == 'POST':
         if not request.form.get('file_name'):
             return render_template('form.html', edit_new_file=True,
