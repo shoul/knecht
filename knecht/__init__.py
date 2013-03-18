@@ -32,14 +32,62 @@ def index():
                 pages=s.engine.get_pages(),
                 entries=s.engine.get_entries())
 
+'''
+-- /new (edit_form mit angepasseten POST uris)
+-- save_new (pfad erstellen lassen, inhalt von save aufrufen)
+-- redirecte nach /edit/gerade_eben_erstellter_pfad_dynamisch
+
+--> /new (edit_form mit angepasseten POST uris)
+--> save_new (pfad erstellen lassen, inhalt von save aufrufen)
+--> redirecte nach /edit/gerade_eben_erstellter_pfad_dynamisch '''
+
+
+@app.route('/edit/edit_new_file', methods=['GET', 'POST'])
+def new():
+    '''Make a new enty in blog engine'''
+    s = _get_session()
+
+    import ipdb; ipdb.set_trace()
+
+    if request.method == 'POST':
+        if not request.form.get('file_name'):
+            return render_template('form.html', edit_new_file=True,
+                content=request.form.get('content'),
+                message="Ops, we need a file_name.")
+
+        # TODO:
+        # * Make branch
+        # * Save new file
+        # * commit
+
+        # TODO: save file with base content in new branch
+        path = '/'.join(['edit', s.user, request.form.get('file_name')])
+        redirect('/%s' % path)
+
+    import datetime
+    base_headers = [
+        '-' * 3,
+        'title: %s' % 'NEW ENTRY',
+        'date: %s' % datetime.datetime.now().strftime('%d.%m.%Y, %H:%M'),
+        'author: %s' % s.user,
+        'tags: []',
+        'filters: ',
+        'permalink: ',
+        'type: ',
+        'encoding:',
+        'lang:',
+        'draft: False',
+        'layout:',
+        '-' * 3, ]
+
+    return render_template('form.html', edit_new_file=True, content='\n'.join(base_headers))
+
+
 
 @app.route('/edit/<user>/<path:file_path>', methods=['GET', 'POST'])
 def edit(user, file_path):
     '''Setup Edit form and fill it with file content'''
     s = _get_session()
-
-    if file_path.strip('/').split('/')[-1] == 'new':
-        return render_template('form.html', content=new_entry(s))
 
     try:
         # TODO adjust preview and finish URIs in form.html
@@ -52,7 +100,6 @@ def edit(user, file_path):
     #      and call it asynchronously? Use fancy user feedback.
 
     if request.method == 'POST':
-        new_content = request.form.get('content')
         try:
             s.engine.store_file(file_path, new_content)
         except Exception as e:
@@ -77,56 +124,19 @@ def edit(user, file_path):
         abort(500)
 
 
-def new_entry(s):
-    '''Make a new enty in blog engine'''
-
-    import datetime
-    import hashlib
-    h = hashlib.new('ripemd160')
-    now = datetime.datetime.now().strftime('%d.%m.%Y, %H:%M')
-    h.update(now)
-    base_headers = [
-    '-' * 3,
-    'title: %s' % 'NEW ENTRY',
-    'date: %s' % now,
-    'author: %s' % s.user,
-    'tags: []',
-    'filters: ',
-    'permalink: ',
-    'type: ',
-    'encoding:',
-    'lang:',
-    'draft: False',
-    'layout:',
-    '-' * 3, ]
-
-    # TODO: save file with base content in new branch
-    tmp_name = h.hexdigest()
-
-    return '\n'.join(base_headers)
-
-
 def save():
     '''Save blog and redirect to edit uri'''
 
-        try:
-            s.engine.finish_file(file_path)
-        except Exception as e:
-            print e
-            # TODO something messed the final merge completely up
-            #      there is no way to solve this exception
-            # return user feedback and send stacktrace to admin
+    try:
+        s.engine.finish_file(file_path)
+    except Exception as e:
+        print e
+        # TODO something messed the final merge completely up
+        #      there is no way to solve this exception
+        # return user feedback and send stacktrace to admin
 
-        # TODO provide user feedback that everything went well
-        return redirect('/')
-
-
-def finish():
-    '''Finishing edit
-
-    * save
-    * merge with the main user branche
-    * deleting existing workbranch for file'''
+    # TODO provide user feedback that everything went well
+    return redirect('/')
 
 
 def _get_session():
