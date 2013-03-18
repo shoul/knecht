@@ -38,7 +38,7 @@ def load_config(env_var):
             else:
                 c[k] = v
     #validate
-    for k in ('repo_src', 'repos', 'engine', 'scm'):
+    for k in ('repos', 'engine'):
         try:
             if not c[k]:
                 raise KeyError()
