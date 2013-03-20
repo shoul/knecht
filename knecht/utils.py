@@ -7,6 +7,7 @@ from importlib import import_module
 from types import ModuleType
 
 from knecht.engine import Engine
+from knecht import log
 
 
 def load_config(env_var):
@@ -14,7 +15,8 @@ def load_config(env_var):
         '_raw' : ModuleType,
         'repos' : str,
         'blogconf' : str,
-        'engine' : Engine
+        'engine' : Engine,
+        'debug' : bool
     })
     c._raw = imp.new_module('config')
 
@@ -22,6 +24,7 @@ def load_config(env_var):
     _ns = c._raw.__dict__
     _ns['ENGINE'] = 'knecht.engine.acrylamid.AcrylamidEngine'
     _ns['BLOGCONF'] = 'conf.py'
+    _ns['DEBUG'] = False
 
     try:
         filepath = os.getenv(env_var, os.path.join(os.getcwd(), 'conf.py'))
@@ -40,6 +43,7 @@ def load_config(env_var):
                 c[k] = getattr(import_module(*v), v[-1])
             else:
                 c[k] = v
+
     #validate
     for k in ('repos', 'engine'):
         try:
@@ -48,6 +52,8 @@ def load_config(env_var):
         except KeyError:
             raise AttributeError('incomplete configuration file: %s, missing settings for : %s'
                     % (filepath, k.upper()))
+
+    log.setLevel(log.INFO if c.debug else log.WARN)
 
     return c
 

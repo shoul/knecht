@@ -4,4 +4,4 @@
 import os
 from knecht import app
 
-app.run(debug=True, port=8000)
+app.run(port=8000)

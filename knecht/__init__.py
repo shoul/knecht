@@ -6,7 +6,7 @@ from knecht.engine import Engine
 from knecht.utils import load_config, Metadata
 from knecht import log
 
-log.init(__name__)
+log.init(__name__, log.INFO)
 
 conf = load_config('KNECHT_CONFIG')
 
