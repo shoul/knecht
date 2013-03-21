@@ -15,8 +15,7 @@ def load_config(env_var):
         '_raw' : ModuleType,
         'repos' : str,
         'blogconf' : str,
-        'engine' : Engine,
-        'debug' : bool
+        'engine' : Engine
     })
     c._raw = imp.new_module('config')
 
@@ -24,7 +23,6 @@ def load_config(env_var):
     _ns = c._raw.__dict__
     _ns['ENGINE'] = 'knecht.engine.acrylamid.AcrylamidEngine'
     _ns['BLOGCONF'] = 'conf.py'
-    _ns['DEBUG'] = False
 
     try:
         filepath = os.getenv(env_var, os.path.join(os.getcwd(), 'conf.py'))
@@ -53,7 +51,7 @@ def load_config(env_var):
             raise AttributeError('incomplete configuration file: %s, missing settings for : %s'
                     % (filepath, k.upper()))
 
-    log.setLevel(log.INFO if c.debug else log.WARN)
+    log.setLevel(log.INFO if getattr(c._raw, 'DEBUG', False) else log.WARN)
 
     return c
 
